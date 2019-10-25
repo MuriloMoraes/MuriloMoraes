@@ -1,0 +1,121 @@
+#include <iostream>
+#include <stdlib.h>
+
+
+using namespace std;
+
+struct valor{
+    int num;
+    struct valor *prox;
+}valor;
+
+typedef struct valor* Pilha;
+typedef struct valor Elem;
+
+Pilha* cria_Pilha(){
+    Pilha* pilh = new Pilha;
+    if(pilh != NULL)
+        *pilh = NULL;
+    return pilh;
+}
+
+void limpa_Pilha(Pilha* pilh){
+    if(pilh != NULL){
+        Elem* no;
+        while((*pilh) != NULL){
+            no = *pilh;
+            *pilh = (*pilh)->prox;
+            free(no);
+        }
+        free(pilh);
+    }
+}
+
+int inserir_Pilha(Pilha* pilh, int valor){
+    if(pilh == NULL)
+        return 0;
+    Elem* no;
+    no = new Elem;
+    if(no == NULL)
+        return 0;
+    no->num = valor;
+    no->prox = (*pilh);
+    *pilh = no;
+    return 1;
+    cout << "\n";
+}
+
+int remove_Pilha(Pilha* pilh){
+    if(pilh == NULL)
+        return 0;
+    if((*pilh) == NULL)
+        return 0;
+    Elem *no = *pilh;
+    *pilh = no->prox;
+    free(no);
+    cout << "\n";
+    return 1;
+}
+
+int tamanho_Pilha(Pilha* pilh){
+    if(pilh == NULL){
+        return 0;}
+    int cont = 0;
+    Elem* no = *pilh;
+    while(no != NULL){
+        cont++;
+        no = no->prox;
+    }
+    return cont;
+}
+
+void imprime_Pilha(Pilha* pilh){
+    if(pilh == NULL){
+        cout << "Vazio";}
+    Elem* no = *pilh;
+    while(no != NULL){
+        cout << no->num << endl;
+        no = no->prox;
+    }
+}
+
+int main(){
+    int valor,insere,tamanho,remover,op;
+
+    Pilha *pilh=cria_Pilha();
+    do{
+    cout << "1 - Inserir\n2 - Listar\n3 - Excluir\n4 - Sair\n";
+    cout <<"Opcao:";
+    cin >> op;
+    switch(op){
+
+        case(1):
+            cout << "Insira o valor:\n";
+            cin >> valor;
+            insere= inserir_Pilha(pilh,valor);
+            break;
+
+        case(2):
+        cout << "Pilha:\n";
+        imprime_Pilha(pilh);
+
+        break;
+
+        case(3):
+            remover = remove_Pilha(pilh);
+            if (remover == 0){
+                cout << "Removido";}
+        break;
+
+        case(4):
+            cout << "Ateh a proxima.";
+        break;
+
+        default:
+            cout << "Acao Invalida\n";
+        break;
+    }
+    }while(op!=4);
+    return 0;
+}
+
